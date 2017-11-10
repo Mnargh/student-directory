@@ -8,7 +8,7 @@ def input_students
     #create an empty array
     students = []
     #get the first name and other information
-    name = gets.chomp
+    name = gets.chomp.to_sym
     puts "Which cohort are they in?"
     cohort = gets.chomp.to_sym
     puts "What hobby do they have?"
@@ -19,7 +19,17 @@ def input_students
     while !name.empty? do
             #add the student hash to the array
             students << {name: name, cohort: cohort, hobby: hobby, height: height}
-            puts "Now we have #{students.count} students"
+            #message for how many students in the array
+            $no_of_students = students.count
+            case $no_of_students
+                when 0
+                    puts "We currently have no students!"
+                when 1
+                    puts "Now we have #{$no_of_students} student!"
+                else
+                    puts "Now we have #{$no_of_students} students!"
+            end
+            
             #get another name from the user and additional information
             puts "Next name?"
             name = gets.chomp
@@ -56,22 +66,25 @@ end
 
 def print(students)
     num = 1
-    students.each do |student|
-        #don't know a way to directly access characters of a symbol (:name)
-        #so have to convert to string and select the character that way
-        if student[:name].to_s.length < 12
-                puts "#{num}." + "#{student[:name]}".center(20) + 
-                " #{student[:cohort]} cohort".center(20) +
-                "hobby: #{student[:hobby]}".center(20) +
-                "height(cm): #{student[:height]} ".center(20)
-                num += 1
-        end
-        
+    students_selec = students.select {|hash_in_array| hash_in_array[:cohort].to_s.downcase == "november"}
+    students_selec.each do |student|
+        puts "#{num}." + "#{student[:name]}".center(20) + 
+        " #{student[:cohort]} cohort".center(20) +
+        "hobby: #{student[:hobby]}".center(20) +
+        "height(cm): #{student[:height]} ".center(20)
+         num += 1
     end
 end
 
 def print_footer(students)
-    puts "Overall we have #{students.count} great students"
+    case $no_of_students
+        when 0
+            puts "We currently have no students!"
+        when 1
+            puts "Overall we have #{$no_of_students} great student!"
+        else
+            puts "Overall we have #{$no_of_students} great students!"
+    end
 end
 
 students = input_students
