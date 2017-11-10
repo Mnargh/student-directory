@@ -32,8 +32,7 @@ def print(students)
     students.each do |student|
         #don't know a way to directly access characters of a symbol (:name)
         #so have to convert to string and select the character that way
-        case student[:name].to_s[0].downcase
-            when "r", "u", "b", "y"
+        if student[:name].to_s.length < 12
                 puts "#{num}. #{student[:name]} (#{student[:cohort]} cohort)"
                 num += 1
         end
