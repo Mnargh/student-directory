@@ -1,12 +1,10 @@
 #!/usr/local/rvm/rubies/ruby-2.3.4/bin/ruby
 
 #Let's put all students into an array
-
+@students = []
 def input_students
     puts "Please enter the names of the students"
     puts "To finish, just hit return twice"
-    #create an empty array
-    $students = []
     #get the first name and other information
     name = gets.chomp.to_sym
     if !name.empty?
@@ -20,9 +18,9 @@ def input_students
     # while the name is not empty, repeat this code
     while !name.empty? do
             #add the student hash to the array
-            $students << {name: name, cohort: cohort, hobby: hobby, height: height}
+            @students << {name: name, cohort: cohort, hobby: hobby, height: height}
             #message for how many students in the array
-            $no_of_students = $students.count
+            $no_of_students = @students.count
             case $no_of_students
                 when 0
                     puts "We currently have no students!"
@@ -55,14 +53,12 @@ def input_students
                 height = "Not given"
             end
     end
-    #returns the array of students
-    $students
 end
     
 
 
 def print_header
-    if $students.count >= 1
+    if @students.count >= 1
     puts "The students of Villains Academy"
     puts "------------"
     end
@@ -70,14 +66,14 @@ end
 
 def print(students)
     num = 1
-    if $students.count >= 1
+    if students.count >= 1
         #option to select by cohort. Could be defined as a new method
-        #students_selec = $students.select {|hash_in_array| hash_in_array[:cohort].to_s.downcase == "november"}
+        #students_selec = @students.select {|hash_in_array| hash_in_array[:cohort].to_s.downcase == "november"}
         students_selec.each do |student|
-            puts "#{num}." + "#{$student[:name]}".center(20) + 
-            " #{$student[:cohort]} cohort".center(20) +
-            "hobby: #{$student[:hobby]}".center(20) +
-            "height(cm): #{$student[:height]} ".center(20)
+            puts "#{num}." + "#{@student[:name]}".center(20) + 
+            " #{@student[:cohort]} cohort".center(20) +
+            "hobby: #{@student[:hobby]}".center(20) +
+            "height(cm): #{@student[:height]} ".center(20)
              num += 1
         end
     end
@@ -94,7 +90,40 @@ def print_footer(students)
     end
 end
 
-$students = input_students
-print_header
-print($students)
-print_footer($students)
+def interactive_menu
+    loop do 
+        # 1. print menu and ask user what to do
+        puts "1. Input the students"
+        puts "2. Show the students"
+        puts "9. Exit" #will be adding more items
+         # 2. read the input and sort it into a variable
+        process(gets.chomp)
+        # 3. do what the user has asked
+        
+# 4. repeat from step 1 - use a loop function
+    end
+end
+
+def process(selection)
+    case selection
+        when "1"
+            #input the students
+            input_students
+        when "2"
+            #display the students
+            show_students
+        when "9"
+            exit #causes the program to terminates
+        else
+            puts "I don't know what you meant, please try again"
+    end
+end
+
+def show_students
+    print_header
+    print(@students)
+    print_footer(@students)
+end
+
+interactive_menu
+
