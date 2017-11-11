@@ -6,21 +6,23 @@ def input_students
     puts "Please enter the names of the students"
     puts "To finish, just hit return twice"
     #create an empty array
-    students = []
+    $students = []
     #get the first name and other information
     name = gets.chomp.to_sym
-    puts "Which cohort are they in?"
-    cohort = gets.chomp.to_sym
-    puts "What hobby do they have?"
-    hobby = gets.chomp.to_sym
-    puts "How tall are they in cm?"
-    height = gets.chomp.to_sym
+    if !name.empty?
+        puts "Which cohort are they in?"
+        cohort = gets.chomp.to_sym
+        puts "What hobby do they have?"
+        hobby = gets.chomp.to_sym
+        puts "How tall are they in cm?"
+        height = gets.chomp.to_sym
+    end
     # while the name is not empty, repeat this code
     while !name.empty? do
             #add the student hash to the array
-            students << {name: name, cohort: cohort, hobby: hobby, height: height}
+            $students << {name: name, cohort: cohort, hobby: hobby, height: height}
             #message for how many students in the array
-            $no_of_students = students.count
+            $no_of_students = $students.count
             case $no_of_students
                 when 0
                     puts "We currently have no students!"
@@ -54,31 +56,36 @@ def input_students
             end
     end
     #returns the array of students
-    students
+    $students
 end
     
 
 
 def print_header
+    if $students.count >= 1
     puts "The students of Villains Academy"
     puts "------------"
+    end
 end
 
 def print(students)
     num = 1
-    students_selec = students.select {|hash_in_array| hash_in_array[:cohort].to_s.downcase == "november"}
-    students_selec.each do |student|
-        puts "#{num}." + "#{student[:name]}".center(20) + 
-        " #{student[:cohort]} cohort".center(20) +
-        "hobby: #{student[:hobby]}".center(20) +
-        "height(cm): #{student[:height]} ".center(20)
-         num += 1
+    if $students.count >= 1
+        #option to select by cohort. Could be defined as a new method
+        #students_selec = $students.select {|hash_in_array| hash_in_array[:cohort].to_s.downcase == "november"}
+        students_selec.each do |student|
+            puts "#{num}." + "#{$student[:name]}".center(20) + 
+            " #{$student[:cohort]} cohort".center(20) +
+            "hobby: #{$student[:hobby]}".center(20) +
+            "height(cm): #{$student[:height]} ".center(20)
+             num += 1
+        end
     end
 end
 
 def print_footer(students)
     case $no_of_students
-        when 0
+        when nil
             puts "We currently have no students!"
         when 1
             puts "Overall we have #{$no_of_students} great student!"
@@ -87,7 +94,7 @@ def print_footer(students)
     end
 end
 
-students = input_students
+$students = input_students
 print_header
-print(students)
-print_footer(students)
+print($students)
+print_footer($students)
