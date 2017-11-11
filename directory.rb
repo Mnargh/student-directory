@@ -32,18 +32,18 @@ def input_students
             
             #get another name from the user and additional information
             puts "Next name?"
-            name = gets.chomp
+            name = gets.chomp.to_sym
             #exit loop if no name given
             if name.empty? 
                 break
             end
             puts "Which cohort are they in?"
-            cohort = gets.chomp
+            cohort = gets.chomp.to_sym
             if cohort.empty?
                 cohort = "not given"
             end
             puts "And their hobby?"
-            hobby = gets.chomp
+            hobby = gets.chomp.to_sym
             if hobby.empty?
                 hobby = "None given"
             end
@@ -55,25 +55,41 @@ def input_students
     end
 end
     
-
-
-def print_header
-    if @students.count >= 1
-    puts "The students of Villains Academy"
-    puts "------------"
+def interactive_menu
+    loop do 
+        # 1. print menu and ask user what to do
+        print_menu
+         # 2. read the input and sort it into a variable
+        process(gets.chomp)
+        # 3. do what the user has asked
+        
+# 4. repeat from step 1 - use a loop function
     end
 end
 
-def print(students)
+def show_students
+    print_header
+    print_student_list(@students)
+    print_footer(@students)
+end
+
+def print_header
+    if @students.count >= 1
+        puts "The students of Villains Academy"
+        puts "------------"
+    end
+end
+
+def print_student_list(students)
     num = 1
     if students.count >= 1
         #option to select by cohort. Could be defined as a new method
-        #students_selec = @students.select {|hash_in_array| hash_in_array[:cohort].to_s.downcase == "november"}
-        students_selec.each do |student|
-            puts "#{num}." + "#{@student[:name]}".center(20) + 
-            " #{@student[:cohort]} cohort".center(20) +
-            "hobby: #{@student[:hobby]}".center(20) +
-            "height(cm): #{@student[:height]} ".center(20)
+        #students_selec = @students.select {|hash_in_array| hash_in_array[:cohort].to_s.downcase != "november"}
+        students.each do |student|
+            puts "#{num}." + "#{student[:name]}".center(20) +
+           " #{student[:cohort]} cohort".center(20) +
+           "hobby: #{student[:hobby]}".center(20) +
+           "height(cm): #{student[:height]} ".center(20)
              num += 1
         end
     end
@@ -90,18 +106,10 @@ def print_footer(students)
     end
 end
 
-def interactive_menu
-    loop do 
-        # 1. print menu and ask user what to do
-        puts "1. Input the students"
-        puts "2. Show the students"
-        puts "9. Exit" #will be adding more items
-         # 2. read the input and sort it into a variable
-        process(gets.chomp)
-        # 3. do what the user has asked
-        
-# 4. repeat from step 1 - use a loop function
-    end
+def print_menu
+    puts "1. Input the students"
+    puts "2. Show the students"
+    puts "9. Exit" #will be adding more items
 end
 
 def process(selection)
@@ -119,11 +127,7 @@ def process(selection)
     end
 end
 
-def show_students
-    print_header
-    print(@students)
-    print_footer(@students)
-end
+
 
 interactive_menu
 
