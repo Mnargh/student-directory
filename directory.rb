@@ -6,14 +6,14 @@ def input_students
     puts "Please enter the names of the students"
     puts "To finish, just hit return twice"
     #get the first name and other information
-    name = gets.chomp.to_sym
+    name = STDIN.gets.chomp.to_sym
     if !name.empty?
         puts "Which cohort are they in?"
-        cohort = gets.chomp.to_sym
+        cohort = STDIN.gets.chomp.to_sym
         puts "What hobby do they have?"
-        hobby = gets.chomp.to_sym
+        hobby = STDIN.gets.chomp.to_sym
         puts "How tall are they in cm?"
-        height = gets.chomp.to_sym
+        height = STDIN.gets.chomp.to_sym
     end
     # while the name is not empty, repeat this code
     while !name.empty? do
@@ -32,23 +32,23 @@ def input_students
             
             #get another name from the user and additional information
             puts "Next name?"
-            name = gets.chomp.to_sym
+            name = STDIN.gets.chomp.to_sym
             #exit loop if no name given
             if name.empty? 
                 break
             end
             puts "Which cohort are they in?"
-            cohort = gets.chomp.to_sym
+            cohort = STDIN.gets.chomp.to_sym
             if cohort.empty?
                 cohort = "not given"
             end
             puts "And their hobby?"
-            hobby = gets.chomp.to_sym
+            hobby = STDIN.gets.chomp.to_sym
             if hobby.empty?
                 hobby = "None given"
             end
             puts "Their height in cm?"
-            height = gets.chomp.to_sym
+            height = STDIN.gets.chomp.to_sym
             if height.to_s.empty?
                 height = "Not given"
             end
@@ -60,7 +60,7 @@ def interactive_menu
         # 1. print menu and ask user what to do
         print_menu
          # 2. read the input and sort it into a variable
-        process(gets.chomp)
+        process(STDIN.gets.chomp)
         # 3. do what the user has asked
         
 # 4. repeat from step 1 - use a loop function
@@ -145,7 +145,7 @@ def save_students
     file.close
 end
 
-def load_students
+def load_students(filename = "students.csv")
     file = File.open("students.csv", "r")
     file.readlines.each do |line|
         name, cohort, hobby, height = line.chomp.split(',')
@@ -154,6 +154,18 @@ def load_students
     file.close
 end
 
+def try_load_students
+    filename = ARGV.first #first argument from the command line
+    return if filename.nil? #get out of the method if it isn't given
+    if File.exists?(filename) #check if that file exists
+        load_students(filename)
+        puts "Successfully loaded #{students.count} students' data from #{filename}"
+    else #if doesn't exist
+        puts "Sorry, #{filename} does not exist."
+        exit #quits the program
+    end
+end
 
+try_load_students
 interactive_menu
 
